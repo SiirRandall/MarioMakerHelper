@@ -10,8 +10,10 @@ from db import Connection
 
 c = Connection()
 c.connect()
-if not c.get("members"):
+members = c.fetch("members")
+if not members:
     c.create("members", {"username": None, "password": None, "salt": None, "admin": 0})
+    members = c.fetch("members")
 
 pepper = "efoijxewioufhaewprofwefz;dorfgjlakesdf;;yesIhitmyheadonmykeyboard"
 
@@ -19,13 +21,11 @@ app = Flask(__name__, template_folder='templates', static_folder='templates/stat
 CORS(app)
 
 def set_admin(username):
-    members = c.get("members")
     members.add({"admin":1}, {"username":username})    
     return True
 
 def signup(username, password):
-    members = c.get("members")
-    user = members.get({"username": username})
+    user = members.fetch({"username": username})
     if user:
         return "User already exists"
 
@@ -38,8 +38,7 @@ def signup(username, password):
     return True
 
 def authenticate(username, password):
-    members = c.get("members")
-    user = members.get({"username": username})
+    user = members.fetch({"username": username})
     if not user:
         return "User doesn't exist"
 
@@ -65,14 +64,16 @@ def played():
     levels = json.load(open('levels.json', 'r'))
     return render_template('played.html', levels=levels["queue"], records=levels["records"])
 
-
 @app.route('/admin')
 def admin_panel():
-    return render_template('admin.html', users=c.get("members").get())
+    if session.get('logged_in') == True:
+        return render_template('admin.html', users=members.fetch())
+    else:
+        return redirect(url_for('login'), code=302)
 
 @app.route('/make_admin', methods=['POST'])
 def make_admin():
-    if not session['admin']:
+    if session.get('admin') == True:
         return abort(401)
         
     set_admin(request.form['username'])
@@ -80,7 +81,7 @@ def make_admin():
 
 @app.route('/register')
 def register():
-    if session.get('logged_in'):
+    if session.get('logged_in') == True:
         return redirect(url_for('main'), code=302)
     else:
         return render_template('register.html')
@@ -97,10 +98,10 @@ def register_process():
 
 @app.route('/login')
 def login():
-    if not session['logged_in']:
-        return render_template('login.html')
-    else:
+    if session.get('logged_in') == True:
         return redirect(url_for('main'), code=302)
+    else:
+        return render_template('login.html')
 
 @app.route('/login_process', methods=['POST'])
 def login_process():
@@ -119,7 +120,7 @@ def logout():
 
 @app.route("/removeq/<levelq>")
 def removeq(levelq):
-    if session['logged_in']:
+    if session.get('logged_in') == True:
         levels = json.load(open("levels.json"))
         del levels['queue'][int(levelq)]
         with open('levels.json', 'w') as f:

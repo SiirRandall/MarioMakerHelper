@@ -22,7 +22,7 @@
             </ul>
         </nav>
         <section class="admin">
-            {% if not session['admin'] %}
+            {% if session.get('admin') != True or session.get('logged_in') != True %}
                 <p>Uh oh you don't have permission to see this!</p>
             {% else %}
                 <div class="admins">

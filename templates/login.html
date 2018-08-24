@@ -22,7 +22,7 @@
             </ul>
         </nav>
         <section class="login">
-            {% if session['logged_in'] %}
+            {% if session.get('logged_in') == True %}
                 <p>Uh oh you should never see this!</p>
             {% else %}
                 <form action="/login_process" method="POST">

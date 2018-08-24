@@ -32,7 +32,7 @@ class Connection:
                          (getattr(self, 'tables'), ""),
                          (getattr(self, 'path'), ""),
                          (getattr(self, 'execute'), "QUERY"),
-                         (getattr(self, 'get'), "?TABLE?"),
+                         (getattr(self, 'fetch'), "?TABLE?"),
                          (getattr(self, 'exit'), ""),
                          (getattr(self, 'interact'), "TABLE"),
                          (getattr(self, 'create'), "NAME COLUMNS"),
@@ -83,7 +83,7 @@ class Connection:
         else:
             return os.getcwd() + "/" + self.database
 
-    def get(self, table:str=None):
+    def fetch(self, table:str=None):
         """Fetch a table in the database.
 
         Parameters
@@ -93,7 +93,7 @@ class Connection:
         """
         # Fetch all the tables from the database
         selection = self.execute('SELECT name FROM sqlite_master WHERE type=\'table\'', False)
-        table_names = selection.fetchall()
+        table_names = selection.fetchall() if selection else []
 
         # Create Table objects
         tables = {}
@@ -210,7 +210,7 @@ class Connection:
             raise DatabaseError("No open database connection")
 
         # Check if the table is valid
-        fetched_table = self.get(table)
+        fetched_table = self.fetch(table)
         if not fetched_table:
             raise DatabaseError("No table named {} exists".format(table))
 
@@ -348,7 +348,7 @@ class Table:
                          (getattr(self, 'path'), ""),
                          (getattr(self, 'clear'), ""),
                          (getattr(self, 'columns'), ""),
-                         (getattr(self, 'get'), "?WHERE?"),
+                         (getattr(self, 'fetch'), "?WHERE?"),
                          (getattr(self, 'add'), "ROW ?WHERE?"),
                          (getattr(self, 'drop'), ""),
                          (getattr(self, 'help'), "?COMMAND?")]
@@ -465,10 +465,10 @@ class Table:
     def columns(self):
         """Get a list of columns in the table"""
         selection = self.connection.execute('PRAGMA table_info({})'.format(self.name), False)
-        columns = [column for column in selection]
+        columns = [column for column in selection] if selection else []
         return [column[1] + ": " + column[4] for column in columns]
 
-    def get(self, where:dict=None):
+    def fetch(self, where:dict=None):
         """Fetch row data from the table.
                 
         Parameters
@@ -495,11 +495,11 @@ class Table:
             selection = self.connection.execute('SELECT * FROM {}'.format(self.name), False)
 
         # Fetch the rows
-        rows = [row for row in selection]
+        rows = [row for row in selection] if selection else []
 
         # Retrieve the columns
         selection = self.connection.execute('PRAGMA table_info({})'.format(self.name), False)
-        columns = [column for column in selection]
+        columns = [column for column in selection] if selection else []
 
         # Save the column names and values in a list
         table = []

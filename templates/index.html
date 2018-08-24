@@ -45,7 +45,7 @@
                     <p id="course-name">{{ level["coursename"] }}</p>
                 </div>
                 <div class="heading-1">
-                    {% if session['admin'] %}
+                    {% if session.get('admin') == True and session.get('logged_in') == True %}
                         <p id="queue-index">
                             {{ 'Current' if not levels.index(level) else levels.index(level) }}
                             <i onclick="next({{ levels.index(level) }})" class="fa fa-trash" aria-hidden="true"></i>

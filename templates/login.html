@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SirRandall</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <ul>
+                <div class="nav-brand">
+                    <a href="#"><img src="{{ url_for('static', filename='img/srg.png') }}" alt="brand-image"></a>
+                </div>
+                <a href="#"><li>Home</li></a>
+                <a href="#"><li>About</li></a>
+                <a href="#"><li>Played Levels</li></a>
+                <a href="#"><li>Contact</li></a>
+                <hr>
+            </ul>
+        </nav>
+        <section class="login">
+            {% if session['logged_in'] %}
+                <p>Uh oh you should never see this!</p>
+            {% else %}
+                <form action="/login_process" method="POST">
+                    <input type="username" name="username" placeholder="Username">
+                    <input type="password" name="password" placeholder="Password">
+                    <input type="submit" value="Log in">
+                </form>
+            {% endif %}
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class="flashes">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+        </section>
+    </div> 
+</body>
+</html>

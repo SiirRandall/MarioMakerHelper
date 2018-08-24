@@ -44,7 +44,7 @@ def authenticate(username, password):
     c.connect()
     members = c.fetch("members")
     user = members.fetch({"username": username})
-    print(user)
+
     if not user:
         return "User doesn't exist"
 
@@ -81,7 +81,7 @@ def admin_panel():
 
 @app.route('/make_admin', methods=['POST'])
 def make_admin():
-    if session.get('admin') == True:
+    if session.get('admin') != True:
         return abort(401)
         
     set_admin(request.form['username'])

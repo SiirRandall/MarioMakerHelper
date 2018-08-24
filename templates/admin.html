@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SirRandall</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <ul>
+                <div class="nav-brand">
+                    <a href="#"><img src="{{ url_for('static', filename='img/srg.png') }}" alt="brand-image"></a>
+                </div>
+                <a href="#"><li>Home</li></a>
+                <a href="#"><li>About</li></a>
+                <a href="#"><li>Played Levels</li></a>
+                <a href="#"><li>Contact</li></a>
+                <hr>
+            </ul>
+        </nav>
+        <section class="admin">
+            {% if not session['admin'] %}
+                <p>Uh oh you don't have permission to see this!</p>
+            {% else %}
+                <div class="admins">
+                    Admins:
+                    {% for user in users %}
+                        {% if user['admin'] %}
+                            <p name="user">{{ user['username'] }}</p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <br><br>
+                <div class="users">
+                    Users:
+                    {% for user in users %}
+                    {% if not user['admin'] %}
+                            <p name="user">{{ user['username'] }}</p>
+                            <form action="/make_admin" method="post">
+                                <input name="username" type="hidden" value="{{ user['username'] }}">
+                                <button type="submit">Make admin</button>
+                            </form>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <br><br><br>
+            <a href="/logout">Logout</a>
+        
+        </section>
+    </div> 
+</body>
+</html>

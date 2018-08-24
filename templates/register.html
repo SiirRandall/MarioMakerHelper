@@ -21,14 +21,14 @@
                 <hr>
             </ul>
         </nav>
-        <section class="login">
+        <section class="register">
             {% if session['logged_in'] %}
                 <p>Uh oh you should never see this!</p>
             {% else %}
-                <form action="/login_process" method="POST">
+                <form action="/register_process" method="POST">
                     <input type="username" name="username" placeholder="Username">
                     <input type="password" name="password" placeholder="Password">
-                    <input type="submit" value="Log in">
+                    <input type="submit" value="Sign up">
                 </form>
             {% endif %}
             {% with messages = get_flashed_messages() %}

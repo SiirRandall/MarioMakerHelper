@@ -13,7 +13,6 @@ c.connect()
 members = c.fetch("members")
 if not members:
     c.create("members", {"username": None, "password": None, "salt": None, "admin": 0})
-    members = c.fetch("members")
 
 pepper = "efoijxewioufhaewprofwefz;dorfgjlakesdf;;yesIhitmyheadonmykeyboard"
 
@@ -21,10 +20,14 @@ app = Flask(__name__, template_folder='templates', static_folder='templates/stat
 CORS(app)
 
 def set_admin(username):
+    c.connect()
+    members = c.fetch("members")
     members.add({"admin":1}, {"username":username})    
     return True
 
 def signup(username, password):
+    c.connect()
+    members = c.fetch("members")
     user = members.fetch({"username": username})
     if user:
         return "User already exists"
@@ -38,7 +41,10 @@ def signup(username, password):
     return True
 
 def authenticate(username, password):
+    c.connect()
+    members = c.fetch("members")
     user = members.fetch({"username": username})
+    print(user)
     if not user:
         return "User doesn't exist"
 
@@ -66,6 +72,8 @@ def played():
 
 @app.route('/admin')
 def admin_panel():
+    c.connect()
+    members = c.fetch("members")
     if session.get('logged_in') == True:
         return render_template('admin.html', users=members.fetch())
     else:

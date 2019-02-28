@@ -64,3 +64,72 @@ nav ul li:hover:before {
 .nav-brand img {
     width: 75px;
 }
+
+@media only screen and (max-width: 600px) {
+    nav ul {
+        background: rgb(40, 49, 56);
+        width: 100%;
+        padding: 0;
+        font-size: 13px;
+        margin: 0;
+        display: flex;
+        align-items: safe center;
+        justify-content: center;
+    }
+    
+    nav ul hr {
+        border: 0;
+        margin: 0 30px;
+    }
+    
+    nav ul a {
+        padding: 25px 1px 25px 25px;
+    }
+    
+    nav ul li {
+        text-transform: uppercase;
+        list-style-type: none;
+        position: relative;
+        color: white;
+        font-size: 80%;
+        -webkit-transition: color .3s ease-out .1s;
+        -moz-transition: color .3s ease-out .1s;
+        -o-transition: color .3s ease-out .1s;
+        transition: color 0.3s ease-out 0.1s;
+    }
+    
+    nav ul li.selected {
+        color: #EBBC25;
+    }
+    
+    nav ul li:hover {
+        color: rgb(236, 187, 0);
+    }
+    
+    nav ul li:before {
+        content: '';
+        position: absolute;
+        width: 0%;
+        height: 5px;
+        margin-top: 30px;
+        background: rgb(236, 187, 0);
+        -webkit-transition: width .15s ease-out .1s;
+        -moz-transition: width .15s ease-out .1s;
+        -o-transition: width .15s ease-out .1s;
+        transition: width 0.15s ease-out 0.1s;
+    }
+    
+    nav ul li:hover:before {
+        width: 100%;
+    }
+    
+    .nav-brand {
+        padding: 15px;
+        margin-left: 22px;
+        margin-right: auto;
+    }
+    
+    .nav-brand img {
+        width: 75px;
+    }
+}

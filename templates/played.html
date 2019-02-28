@@ -32,7 +32,7 @@
             </ul>
         </nav>
         <section class="queue">
-            <h1>Queue</h1>
+            <h1>Played</h1>
 
             {% for level in records %}
             <div class="level">
@@ -40,14 +40,6 @@
                     <p id="course-name">{{ level["coursename"] }}</p>
                 </div>
                 <div class="heading-1">
-                    {% if session.get('admin') == True and session.get('logged_in') == True %}
-                        <p id="queue-index">
-                            {{ 'Current' if not records.index(level) else records.index(level) }}
-                            <i onclick="next({{ records.index(level) }})" class="fa fa-trash" aria-hidden="true"></i>
-                        </p>
-                    {% else %}
-                        <p id="queue-index">{{ 'Current' if not records.index(level) else records.index(level) }}</p>
-                    {% endif %}
                 </div>
                 <div class="level-img-long"><img src="{{ level["level_img_long"] }}"></div>
                 <div class="level-info">

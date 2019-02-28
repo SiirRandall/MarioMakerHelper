@@ -11,7 +11,7 @@ from db import Connection
 from bs4 import BeautifulSoup
 import urllib.request as urllib2
 import re
-from smmbget import get_level_info, check_valid_level, write_level_info, check_level_duplicate
+import smmbget as *
 
 c = Connection()
 c.connect()
@@ -23,6 +23,20 @@ pepper = "efoijxewioufhaewprofwefz;dorfgjlakesdf;;yesIhitmyheadonmykeyboard"
 
 app = Flask(__name__, template_folder='templates', static_folder='templates/static')
 CORS(app)
+
+def ConvertSVGtoText(text):
+	if text == "percent":
+		return("%")
+	elif text == "minute":
+		return(":")
+	elif text == "second":
+		return(".")
+	elif text == "slash":
+		return("/")
+	elif text == "hyphen":
+		return("-")
+	else:
+		return(text)
 
 def set_admin(username):
     c.connect()
@@ -94,17 +108,62 @@ def test():
     level = request.args.get('level', type = str)
     platform = request.args.get('platform', type = str)
     userid = request.args.get('user', type = str)
-    
-    if check_level_duplicate(level) == True:
-        return userid + ' Sorry this level has already been played'
-    
-    if check_valid_level(level) == False:
-        return userid + ' Level ID is invalid or not found. Please check the ID and try again. Example: !add EEBD-0000-01CE-4CB6'
+    url = f'https://supermariomakerbookmark.nintendo.net/courses/{level}'
+    check = requests.get(f'{url}')
+    if int(check.status_code) == 200:
+        page = urllib2.urlopen(url)
+        soup = BeautifulSoup(page, 'html.parser')
+        name_box = soup.find('div', attrs={'class': 'course-title'})
+        clearrate_box = soup.find("div", {"class" : "clear-rate"})
+        difficulty_box = soup.find('div', class_='course-header')
+        img_box = soup.find('div', attrs={'class': 'course-image'})
+        img_long_box = soup.find('div', attrs={'class': 'course-image-full-wrapper'})
+        name = name_box.text.strip()
+        difficulty = difficulty_box.text.strip()
+        #print(difficulty_box)
+        test = clearrate_box.findAll("div",{"class" : re.compile("typography.*")})
+         
+        ClearRate = ""
+        for i in clearrate_box.findAll("div",{"class" : re.compile("typography.*")}):
+            print(i)
+            ClearRate += ConvertSVGtoText(re.match(".*typography.*typography-(\w+).*",str(i.attrs)).group(1))
+            
+
+        print(difficulty)
+        #print(clearrate_box)
+        print(ClearRate)
+        #print(test)
+        ''' img = img_box.find("img")['src']
+        img_long = img_long_box.find("img")['src']
+        levels = json.load(open('levels.json', 'r'))
+        for x in levels['records']:
+            if level == x['level_id']:
+			    return  "Level has already been played. Please Submit another level"
+                
+            level_queue = {
+                "name": user,
+                "level_id": level,
+                "platform": platform,
+                "coursename": name,
+                "img_url": img,
+                "level_img_long": img_long
+                }
+
+            levels["queue"].append(level_queue)
+            levels["records"].append(level_queue)
+            
+            with open('/home/rmcfarlane/MarioMakerHelper/levels.json', 'w') as f:
+                json.dump(levels, f, indent=2)'''
     else:
-        temp_level = get_level_info(level)
-        write_level_info(temp_level, userid, platform)
-        return userid + ' Your level ' + temp_level["coursename"] + ' has been submited'
+        return 'This Code is not valid'
     
+    
+    
+    print(level + " " + platform)
+    return '@' + userid + ' Level is ' + name + ' from: ' + platform + ' '  + difficulty
+
+
+
 @app.route('/admin')
 def admin_panel():
     c.connect()

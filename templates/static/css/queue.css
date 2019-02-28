@@ -114,3 +114,153 @@
 .queue .level .level-img-long img {
     max-width: 100%;
 }
+
+@media only screen and (max-width: 600px) {
+    .queue {
+        text-align: center;
+        margin-top: 50px;
+    }
+    
+    .queue .level .level-info p {
+        background: rgba(0, 0, 0, 0.607);
+        color: white;
+        /*+border-radius: 7px;*/
+        -moz-border-radius: 7px;
+        -webkit-border-radius: 7px;
+        -khtml-border-radius: 7px;
+        border-radius: 7px;
+    }
+    
+    .queue .level .level-info a {
+        background: rgba(0, 0, 0, 0.607);
+        color: white;
+        /*+border-radius: 7px;*/
+        -moz-border-radius: 7px;
+        -webkit-border-radius: 7px;
+        -khtml-border-radius: 7px;
+        border-radius: 7px;
+    }
+    
+    .queue h1 {
+        margin: 0px auto;
+        font-family: 'Source Sans Pro', sans-serif;
+        font-size: 30px;
+        background: rgb(40, 49, 56);
+        color: rgb(255, 255, 255);
+        text-shadow: 3px 2px rgba(0, 0, 0, 0.085);
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        -khtml-border-radius: 10px;
+        border-radius: 10px;
+        width: 40%;
+        text-transform: uppercase;
+        box-shadow: 4px 5px rgba(0, 0, 0, 0.200);
+        margin-bottom: 40px;
+    }
+    
+    .queue .level {
+        display: grid;
+        max-width: 83%;
+        position: relative;
+        margin: auto auto 30px auto;
+        grid-template: repeat(4, 1fr) / repeat(2, 1fr);
+        grid-template-rows: 50px;
+        background: #FBD000;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        box-shadow: 4px 4px rgba(2, 2, 2, 0.393);
+        border-top-right-radius: 10px;
+        height: 545px;
+        font-size: 15px;
+    }
+    
+    .queue .level .heading {
+        grid-area: 1 / 1 / 1 / span 2;
+        background: #283138;
+        color: white;
+        border-top-left-radius: 10px;
+        text-align: start;
+        padding-left: 10px;
+    }
+    
+    .queue .level .heading-1 {
+        grid-area: 1 / span2;
+        background: #283138;
+        color: white;
+        text-align: right;
+        border-top-right-radius: 10px;
+        padding-right: 10px;
+    }
+    
+    .queue .level .level-info {
+        grid-area: 2 / span 4 / 2 / span 1;
+        margin-top: 20px;
+        font-size: 14px;
+        padding-left: 41px;
+    }
+    
+    .queue .level img {
+        max-width: 100%;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        -khtml-border-radius: 10px;
+        border-radius: 10px;
+        box-shadow: 3px 3px rgba(0, 0, 0, 0.376);
+    }
+    
+    .queue .level .level-img {
+        grid-area: 3 / span 8 / 4 / span 10;
+        padding-top: 10px;
+        image-resolution: 3px;
+    }
+    
+    .queue .level .level-img img {
+        max-width: 90%;
+        height: auto;
+        width: auto;
+    }
+    
+    .queue .level .level-img-long {
+        grid-area: 4 / 1 / 4 / 5;
+        padding-top: 8px;
+        padding-bottom: 15px;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    .queue .level .level-img-long img {
+        max-width: 100%;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    .queue .level {
+        display: grid;
+        max-width: 80%;
+        position: static;
+        margin: auto auto 50px auto;
+        grid-template: repeat(10, 1fr) / repeat(10, 1fr);
+        grid-template-rows: 50px;
+        background: #FBD000;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        box-shadow: 4px 4px rgba(2, 2, 2, 0.393);
+        border-top-right-radius: 10px;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 767px) {
+    .queue .level {
+        display: grid;
+        max-width: 95%;
+        position: static;
+        margin: auto auto 50px auto;
+        grid-template: repeat(10, 1fr) / repeat(10, 1fr);
+        grid-template-rows: 50px;
+        background: #FBD000;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        box-shadow: 4px 4px rgba(2, 2, 2, 0.393);
+        border-top-right-radius: 10px;
+    }
+}
